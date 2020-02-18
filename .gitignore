@@ -1,0 +1,5 @@
+node_modules
+/,stuff
+.DS_Store
+/test/generated_files/*
+/dist
