@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // const path = require('path');
 const fs = require('fs');
 const path = require('path');
@@ -316,14 +318,21 @@ function fatal(msg) {
 // }
 
 async function copySingleFile(sourceFile, targetFile) {
-  console.log(`-----------------------------------`);
-  console.log(`# cp ${sourceFile}, ${targetFile}`);
+  // console.log(`-----------------------------------`);
+  // console.log(`# cp ${sourceFile}, ${targetFile}`);
 
-  console.log(`  isText: ${isText(sourceFile)}`);
-  console.log(`  isBinary: ${isBinary(sourceFile)}`);
-  console.log(`  getEncoding: ${getEncoding(sourceFile)}`);
+  // console.log(`  isText: ${isText(sourceFile)}`);
+  // console.log(`  isBinary: ${isBinary(sourceFile)}`);
+  // console.log(`  getEncoding: ${getEncoding(sourceFile)}`);
 
   let variables = await flattenConfig()
+
+  // Check that the directory exists.
+  const dir = path.dirname(targetFile)
+  console.log(`Chcking directory ${dir}`);
+  fs.mkdirSync(dir, { recursive: true })
+
+
   // console.log(`variables=`, variables);
   // if (isText(sourceFile) || getEncoding(sourceFile) === 'utf8') {
   if (isBinary(sourceFile)) {
@@ -334,7 +343,7 @@ async function copySingleFile(sourceFile, targetFile) {
     // Text file (expect ASCII or UTF-8)
     // Read the file
     let data = fs.readFileSync(sourceFile, 'utf8')
-    console.log(`INPUT:\n`, data);
+    // console.log(`INPUT:\n`, data);
     // Replace all known variables
     for (name in variables) {
       let value = variables[name]
@@ -384,7 +393,7 @@ async function copySingleFile(sourceFile, targetFile) {
     } else {
       // Save to the target file.
       // console.log(`OUTPUT:\n`, data);
-      console.log(`OUTPUT:\n`, data);
+      // console.log(`OUTPUT:\n`, data);
       fs.writeFileSync(targetFile, data)
     }
     return errors
@@ -467,18 +476,18 @@ async function doInstall(files, destination) {
             // console.log(`dest ${destination} is file`);
             // (1)
             // install source_file target_file
-            console.log(`copy file to file`);
+            // console.log(`copy file to file`);
             let errors = await copySingleFile(source, destination)
             return errors
             // } else if (destinationEntry.isFile()) {
             //   fatal(`Not a file (${destination})`)
           } else if (destinationEntry.isDirectory()) {
-            console.log(`dest ${destination} is directory`);
+            // console.log(`dest ${destination} is directory`);
             // install source_file target_directory
-            console.log(`copy file to directory`);
+            // console.log(`copy file to directory`);
             let basename = path.basename(source)
             destination = `${destination}/${basename}`
-            console.log(`New destination is ${destination}`);
+            // console.log(`New destination is ${destination}`);
             let errors = await copySingleFile(source, destination)
             return errors
           } else {
@@ -504,6 +513,10 @@ async function doInstall(files, destination) {
         }
         console.log(`yog 8`);
       }
+
+    } else {
+      // Source fie does not exist
+      fatal(`Source does not exist: ${source}`)
 
     }
   }

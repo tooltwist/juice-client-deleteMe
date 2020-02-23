@@ -1,0 +1,6 @@
+
+This is my fancy config file.
+{
+  "name": "juice",
+  "port": "56911"
+}
