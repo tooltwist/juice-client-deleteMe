@@ -1,4 +1,4 @@
-# Deprecated. See https://github.com/tooltwist/juiceconfig
+# Deprecated - see https://github.com/tooltwist/juiceconfig
 
 
 
