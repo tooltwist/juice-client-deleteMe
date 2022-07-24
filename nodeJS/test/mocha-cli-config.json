@@ -1,0 +1,7 @@
+{
+  "db": {
+    // Database details
+    "database": "juice",
+    "port": /* A comment here */ 56911
+  }
+}
